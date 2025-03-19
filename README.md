@@ -18,7 +18,6 @@ A full-stack task management application with user authentication, built with Ne
   - [Docker Compose Configuration](#docker-compose-configuration)
 - [Unit Tests](#unit-tests)
 - [Troubleshooting](#troubleshooting)
-- [Additional Notes](#additional-notes)
 
 ---
 
@@ -194,15 +193,4 @@ This command will run all tests located under the `src/test/` directory.
 
 ---
 
-## Additional Notes
-
-- **Swagger Documentation:**\
-  The API documentation is available via Swagger at:
-
-  - **Swagger UI:** [http://localhost:8000/api-docs](http://localhost:8000/api-docs)
-
-- **Authentication Tokens:**\
-  The current implementation uses JWT for authentication. (Refresh token mechanism is not implemented.)
-
----
 

@@ -81,7 +81,7 @@ DATABASE_URL=postgresql://postgres:1234@db:5432/tasks?schema=public
 Ensure that the frontend environment variables (e.g., in your Next.js configuration or via Docker Compose) are set as follows:
 
 ```env
-BACKEND_URL=http://backend:8000
+BACKEND_URL=http://localhost:8000
 SECRET_KEY=very_secret_key
 ```
 
@@ -111,7 +111,7 @@ SECRET_KEY=very_secret_key
 
 ### Docker Compose Configuration
 
-Below is an example `docker-compose.yaml` file:
+Below is `docker-compose.yaml` file:
 
 ```yaml
 version: "3.8"

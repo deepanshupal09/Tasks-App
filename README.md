@@ -32,7 +32,7 @@ This application allows users to log in and manage their tasks (create, read, up
 
 ### Frontend
 
-- **User Authentication**: Login and logout functionality using JWT tokens (access token implemented; refresh token mechanism is not included).
+- **User Authentication**: Login and logout functionality using JWT tokens.
 - **Task Management**: Create, update, delete, and view tasks.
 - **State Management**: Redux is used to manage application state.
 - **Built with Next.js**: Provides fast development and server-side rendering capabilities.

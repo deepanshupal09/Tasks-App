@@ -72,7 +72,7 @@ This application allows users to log in and manage their tasks (create, read, up
 Create a `.env` file in the **backend** directory with the following content:
 
 ```env
-SECRET_KEY=chotahathi
+SECRET_KEY=very_secret_key
 DATABASE_URL=postgresql://postgres:1234@db:5432/tasks?schema=public
 ```
 
@@ -82,7 +82,7 @@ Ensure that the frontend environment variables (e.g., in your Next.js configurat
 
 ```env
 BACKEND_URL=http://backend:8000
-SECRET_KEY=chotahathi
+SECRET_KEY=very_secret_key
 ```
 
 *Note: The **`BACKEND_URL`** should point to the Docker Compose service name (**`backend`**), not **`localhost`**.*
@@ -122,7 +122,7 @@ services:
       - "3000:3000"
     environment:
       - BACKEND_URL=http://backend:8000
-      - SECRET_KEY=chotahathi
+      - SECRET_KEY=very_secret_key
     depends_on:
       - backend
 
@@ -131,7 +131,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - SECRET_KEY=chotahathi
+      - SECRET_KEY=very_secret_key
       - DATABASE_URL=postgresql://postgres:1234@db:5432/tasks?schema=public
     depends_on:
       - db

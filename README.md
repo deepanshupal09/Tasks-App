@@ -12,10 +12,9 @@ A full-stack task management application with user authentication, built with Ne
 - [Project Structure](#project-structure)
 - [Setup and Installation](#setup-and-installation)
   - [Prerequisites](#prerequisites)
+  - [Running Locally](#running-locally)
+  - [Running with Docker](#running-with-docker)
   - [Environment Variables](#environment-variables)
-- [Dockerization](#dockerization)
-  - [Building and Running the Containers](#building-and-running-the-containers)
-  - [Docker Compose Configuration](#docker-compose-configuration)
 - [Unit Tests](#unit-tests)
 - [Troubleshooting](#troubleshooting)
 
@@ -44,6 +43,10 @@ This application allows users to log in and manage their tasks (create, read, up
 - **Swagger Documentation**: All API endpoints are documented in Swagger.
 - **Unit Testing**: Unit tests written using Mocha and Chai.
 
+### Database
+
+- PostgreSQL
+
 ---
 
 ## Technologies Used
@@ -56,99 +59,151 @@ This application allows users to log in and manage their tasks (create, read, up
 
 ---
 
+## Project Structure
+
+```
+TASK APP
+│── backend
+│   ├── src
+│   │   ├── controllers
+│   │   │   ├── todoControllers.ts
+│   │   │   ├── userControllers.ts
+│   │   ├── middlewares
+│   │   │   ├── middlewares.ts
+│   │   ├── routes
+│   │   │   ├── docs.json
+│   │   │   ├── todoRoutes.ts
+│   │   │   ├── userRoutes.ts
+│   │   ├── services
+│   │   │   ├── todoService.ts
+│   │   │   ├── userService.ts
+│   │   ├── test
+│   │   │   ├── controllers
+│   │   │   │   ├── todoControllers.test.ts
+│   │   │   │   ├── userControllers.test.ts
+│   │   ├── types
+│   │   │   ├── todoTypes.ts
+│   │   ├── utils
+│   │   │   ├── swagger.ts
+│   │   │   ├── utils.ts
+│   │   ├── index.ts
+│   ├── .env
+│── frontend
+│   ├── .next
+│   ├── app
+│   │   ├── (navbar)/home
+│   │   │   ├── DonutCharts.tsx
+│   │   │   ├── layout.tsx
+│   │   │   ├── page.tsx
+│   │   │   ├── Task.tsx
+│   │   ├── actions
+│   │   │   ├── apis.ts
+│   │   ├── cookie.ts
+│   │   ├── utils.ts
+│   │   ├── assets
+│   │   ├── icons.tsx
+│   │   ├── components
+│   │   │   ├── Navbar.tsx
+│   │   ├── signup
+│   │   │   ├── page.tsx
+│   ├── public
+│   │   ├── favicon.ico
+│   ├── styles
+│   │   ├── globals.css
+│   ├── store
+│   ├── middleware.ts
+│   ├── .env
+```
+---
+
 ## Setup and Installation
 
 ### Prerequisites
 
-- [Docker](https://docs.docker.com/get-docker/) & [Docker Compose](https://docs.docker.com/compose/install/)
-- [Node.js](https://nodejs.org/) (if running locally outside Docker)
-- [Git](https://git-scm.com/)
+#### For Local Development:
+- **Node.js** 
+- **npm** 
+- **PostgreSQL**
+- **Git** 
 
-### Environment Variables
+#### For Docker Deployment:
+- **Docker** 
+- **Docker Compose**
 
-#### Backend
+#### Development Tools (Optional):
+- A code editor (VS Code recommended)
+- Postman or similar tool for API testing
+- pgAdmin or similar tool for database management
 
-Create a `.env` file in the **backend** directory with the following content:
+ **Clone the repository**
+ 
+ ```bash
+ git clone https://github.com/deepanshupal09/Tasks-App.git
+ cd Tasks-App
+ ```
 
-```env
-SECRET_KEY=very_secret_key
-DATABASE_URL=postgresql://postgres:1234@db:5432/tasks?schema=public
-```
+### Running Locally
 
-#### Frontend
 
-Ensure that the frontend environment variables (e.g., in your Next.js configuration or via Docker Compose) are set as follows:
+2. **Set up environment variables** (Create `.env` files in `backend` and `frontend` directories as mentioned in the Environment Variables section).
 
-```env
-BACKEND_URL=http://localhost:8000
-SECRET_KEY=very_secret_key
-```
+3. **Start the PostgreSQL database** (if not using Docker)
+   - Ensure PostgreSQL service is running
+   - Create a new database for the application
 
-*Note: The **`BACKEND_URL`** should point to the Docker Compose service name (**`backend`**), not **`localhost`**.*
-
----
-
-## Dockerization
-
-### Building and Running the Containers
-
-1. **Build and Start the Containers**
-
-   From the root directory (where `docker-compose.yaml` is located), run:
-
+4. **Run Backend**
    ```bash
-   docker-compose up --build
+   cd backend
+   npm install
+   npx prisma generate
+   npm run build
+   npm run start
    ```
 
-   This command builds the Docker images for the frontend, backend, and PostgreSQL database, then starts all the containers.
+5. **Run Frontend**
+   ```bash
+   cd frontend
+   npm install
+   npm run build
+   npm run start
+   ```
 
-2. **Access the Application**
+6. **Access the Application**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
+   - Swagger Documentation: http://localhost:8000/api-docs
 
+### Running with Docker
+
+1. **Ensure Docker is installed and running.**
+
+2. **Build and Start the Containers**
+   ```bash
+   docker-compose up -d
+   ```
+
+3. **Access the Application**
    - **Frontend:** [http://localhost:3000](http://localhost:3000)
    - **Backend API:** [http://localhost:8000](http://localhost:8000)
    - **Swagger Documentation:** [http://localhost:8000/api-docs](http://localhost:8000/api-docs)
 
-### Docker Compose Configuration
+### Environment Variables
 
-Below is `docker-compose.yaml` file:
+#### Backend (only required if running locally outside Docker)
 
-```yaml
-version: "3.8"
-services:
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    environment:
-      - BACKEND_URL=http://backend:8000
-      - SECRET_KEY=very_secret_key
-    depends_on:
-      - backend
+Create a `.env` file in the **backend** directory with the following content:
+```
+DATABASE_URL="postgresql://username:password@localhost:5432/taskdb?schema=public"
+JWT_SECRET="your-jwt-secret-key"
+PORT=8000
+NODE_ENV=development
+```
 
-  backend:
-    build: ./backend
-    ports:
-      - "8000:8000"
-    environment:
-      - SECRET_KEY=very_secret_key
-      - DATABASE_URL=postgresql://postgres:1234@db:5432/tasks?schema=public
-    depends_on:
-      - db
+#### Frontend
 
-  db:
-    image: postgres:13
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: "1234"
-      POSTGRES_DB: tasks
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
-volumes:
-  pgdata:
+Create a `.env.local` file in the **frontend** directory with:
+```
+NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
 ---
@@ -158,6 +213,7 @@ volumes:
 Unit tests for the backend are written using Mocha and Chai. To run the tests, navigate to the **backend** directory and execute:
 
 ```bash
+cd backend
 npm run test
 ```
 
@@ -171,26 +227,19 @@ This command will run all tests located under the `src/test/` directory.
   If you have another instance of PostgreSQL or another service running on the same port, either stop the conflicting service or update the port mappings in the `docker-compose.yaml`.
 
 - **Database Connection Issues:**\
-  Verify that the backend `DATABASE_URL` uses the Docker Compose service name (`db`) instead of `localhost`.\
-  Example:\
-  `DATABASE_URL=postgresql://postgres:1234@db:5432/tasks?schema=public`
+  Verify that the backend `DATABASE_URL` uses the correct host (`db` when using Docker, `localhost` otherwise).\
+  Example: `DATABASE_URL="postgresql://username:password@db:5432/taskdb?schema=public"` for Docker
 
 - **Container Crashes:**\
   Check container logs using:
-
   ```bash
   docker-compose logs [service-name]
   ```
-
   Replace `[service-name]` with `frontend`, `backend`, or `db` as needed.
 
 - **Rebuild Issues:**\
   If you make changes to Dockerfiles or environment variables, rebuild the containers:
-
   ```bash
-  docker-compose up --build
+  docker-compose down
+  docker-compose up --build -d
   ```
-
----
-
-
